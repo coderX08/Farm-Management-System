@@ -59,6 +59,9 @@ o	Each activity is assigned a unique count to maintain FIFO order for equal prio
 o	Supports operations like add_activity(), remove_activity(), pop_activity()
 o	Time complexity for queue operations is O(log n)
 o	Includes a special REMOVED marker to handle removed items efficiently
+
+
+
 2. Circular Linked List for Recurring Tasks
 •	File Location: models.py - Node and CircularLinkedList classes
 •	Purpose: Manages recurring farm activities (like irrigation, fertilizing) in a cyclical pattern
@@ -69,6 +72,11 @@ o	Maintains interval information for recurring activities
 o	Efficiently calculates next occurrence dates
 o	Handles operations like append(), remove(), get_all_activities()
 o	When a recurring activity is completed, system automatically schedules the next occurrence
+
+
+
+
+
 3. Graph Data Structure for Community Connections
 •	File Location: models.py - CommunityGraph class
 •	Purpose: Establishes connections between farmers and enables friend recommendations
@@ -80,6 +88,12 @@ o	Connection strength increases as users interact (comment, like posts)
 o	Implements Dijkstra's algorithm to find potential friend recommendations
 o	Calculates paths through the network to find indirect connections
 o	Time complexity for friend recommendations is O(E log V) where E is edges and V is vertices
+
+
+
+
+
+
 4. Tree Data Structure for Tag Management
 •	File Location: models.py - TagNode and TagTree classes
 •	Purpose: Organizes community posts with a hierarchical tagging system
@@ -90,6 +104,14 @@ o	Allows efficient searching of posts by tags and categories
 o	Maintains post counts for each tag
 o	Supports operations like add_tag(), add_post_to_tag(), find_posts_by_tag()
 o	Enables browsing posts by category hierarchies
+
+
+
+
+
+
+
+
 5. Inventory Management System
 •	File Location: models.py - InventoryManager class
 •	Purpose: Tracks farm inventory items and generates low stock alerts
