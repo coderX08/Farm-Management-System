@@ -1,0 +1,252 @@
+/* Media Query for Large Screens */
+@media (min-width: 1300px) {
+    .header-scrolled {
+        left: auto;
+        right: auto;
+    }
+}
+
+/* Media Query for Laptop Screens */
+@media (max-width: 1199.5px) {
+    /* Custom CSS */
+    h1 {
+        font-size: 6.4rem;
+    }
+
+    h2 {
+        font-size: 3.5rem;
+    }
+
+    h3 {
+        font-size: 2.8rem;
+    }
+
+    /* Navbar */
+    .header .navbar {
+        padding: 2rem;
+    }
+
+    .header .navbar-nav .nav-link {
+        font-size: 1.5rem;
+        padding: 0.5rem 1rem;
+    }
+
+    /* Banner Section */
+    .banner_section .carousel-caption {
+        top: 50%;
+        transform: translateY(-50%);
+    }
+
+    /* Login Section */
+    .login-box {
+        padding: 3rem;
+    }
+
+    /* Weather Card */
+    .weather-temp {
+        font-size: 3.5rem;
+    }
+
+    .weather-icon {
+        width: 7rem;
+        height: 7rem;
+    }
+}
+
+/* Media Query for Tablet Screens */
+@media (max-width: 991.5px) {
+    /* Custom CSS */
+    h1 {
+        font-size: 5rem;
+    }
+
+    h2 {
+        font-size: 3rem;
+    }
+
+    h3 {
+        font-size: 2.5rem;
+    }
+
+    .section-subtitle {
+        max-width: 60%;
+    }
+
+    /* Navbar */
+    .header .navbar-collapse {
+        background-color: var(--dark-color);
+        padding: 2rem;
+    }
+
+    .header .navbar-nav .nav-link {
+        margin-bottom: 1rem;
+    }
+
+    .header .header_right {
+        margin-top: 1.5rem;
+        justify-content: center;
+    }
+
+    /* Banner Section */
+    .banner_section .carousel-caption {
+        top: 45%;
+    }
+
+    /* Weather Section */
+    .weather-card {
+        margin-bottom: 3rem;
+    }
+
+    /* Activity Section */
+    .activity-card {
+        margin-bottom: 3rem;
+    }
+}
+
+/* Media Query for Mobile Screens */
+@media (max-width: 767.5px) {
+    /* Custom CSS */
+    h1 {
+        font-size: 4rem;
+    }
+
+    h2 {
+        font-size: 2.5rem;
+    }
+
+    h3 {
+        font-size: 2rem;
+    }
+
+    p {
+        font-size: 1.4rem;
+    }
+
+    .section-subtitle {
+        max-width: 80%;
+    }
+
+    .main-btn {
+        font-size: 1.5rem;
+        padding: 0.8rem 2rem;
+    }
+
+    /* Banner Section */
+    .banner_section {
+        min-height: 70vh;
+    }
+
+    .banner_section .carousel-item {
+        height: 70vh;
+    }
+
+    .banner_section .carousel-caption h3 {
+        font-size: 2rem;
+    }
+
+    /* Login Section */
+    .login-box {
+        padding: 2rem;
+    }
+
+    /* Weather Section */
+    .weather-section {
+        padding: 5rem 0;
+    }
+
+    .weather-card {
+        padding: 2rem;
+    }
+
+    /* Activity Section */
+    .activity-section {
+        padding: 5rem 0;
+    }
+
+    .activity-card {
+        padding: 2rem;
+    }
+
+    /* Community Section */
+    .community-section {
+        padding: 5rem 0;
+    }
+
+    .community-card {
+        padding: 2rem;
+    }
+
+    /* Footer */
+    .footer {
+        padding: 5rem 0 0;
+    }
+}
+
+/* Media Query for Small Mobile Screens */
+@media (max-width: 567.5px) {
+    /* Custom CSS */
+    h1 {
+        font-size: 3rem;
+    }
+
+    h2 {
+        font-size: 2.2rem;
+    }
+
+    p {
+        font-size: 1.3rem;
+    }
+
+    .section-subtitle {
+        max-width: 95%;
+    }
+
+    /* Banner Section */
+    .banner_section .carousel-caption {
+        top: 40%;
+    }
+
+    .banner_section .carousel-caption p {
+        max-width: 100%;
+    }
+
+    /* Login Section */
+    .login-box {
+        max-width: 90%;
+    }
+
+    /* Weather Section */
+    .forecast-table th, .forecast-table td {
+        padding: 1rem 0.5rem;
+        font-size: 1.2rem;
+    }
+
+    .forecast-icon {
+        width: 3rem;
+        height: 3rem;
+    }
+
+    /* Community Section */
+    .member-avatar {
+        width: 4rem;
+        height: 4rem;
+    }
+
+    .member-info h4 {
+        font-size: 1.6rem;
+    }
+
+    .post-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .post-avatar {
+        margin-bottom: 1rem;
+    }
+
+    .post-actions {
+        flex-direction: column;
+        gap: 1rem;
+    }
+}
