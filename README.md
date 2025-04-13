@@ -121,6 +121,13 @@ o	Automatically checks stock levels when quantities change
 o	Generates alerts when items fall below minimum quantities
 o	Associates inventory items with farming activities
 o	Validates if there's enough inventory for scheduled activities
+
+
+
+
+
+
+
 6. Weather Analytics System
 •	File Location: models.py - WeatherAnalytics class
 •	Purpose: Tracks weather data and enables smart farming decisions
@@ -129,6 +136,12 @@ o	Stores weather data with date-based indexing for fast retrieval
 o	Checks weather forecasts to intelligently manage irrigation
 o	Provides methods to skip irrigation when rain is forecasted
 o	Has forecasting capabilities for multi-day planning
+
+
+
+
+
+
 Database System
 The project uses SQLite3 for data storage (farm_management.db) with the following tables:
 Database Structure
@@ -147,22 +160,35 @@ x.	post_tags: Junction table linking posts to tags
 xi.	comments: User comments on community posts
 xii.	user_connections: Records of user relationships (for graph structure)
 xiii.	private_messages: Direct communications between users
+
+
+
+
+
 Database Operations
 •	Connection Management: Uses get_db_connection() function in app.py
 •	Data Access: Uses cursor-based SQL operations for CRUD operations
 •	Transaction Safety: Implements commit() for data integrity
 •	Foreign Key Relationships: Maintains referential integrity between tables
 •	Default Data: Populates initial activity types, crop types, and tags
+
+
+
+
+
 Personalized Activity Tracker Logic
 Activity Tracking Implementation
 •	File Location: app.py - activity-related routes
 •	Core Logic:
+
 i.	Activity Creation (add_activity route):
 o	Collects activity details (type, date, field, crop, etc.)
 o	Sets recurrence pattern if applicable
 o	Associates required inventory items
 o	Prioritizes activities based on user input
 o	Stores in the database with user_id for personalization
+
+
 ii.	Activity Completion (complete_activity route):
 o	Marks activity as completed
 o	Updates inventory quantities based on used resources
@@ -170,14 +196,20 @@ o	If recurring, automatically generates next occurrence:
 	Calculates next date using interval_days
 	Creates new activity entry with same properties
 	Maintains the recurring pattern using circular linked list concept
+
+
 iii.	Weather Integration:
 o	Checks weather forecast before irrigation activities
 o	Can skip or reschedule based on rain predictions
 o	Uses should_skip_irrigation method from WeatherAnalytics class
+
+
 iv.	Inventory Validation:
 o	Verifies if required inventory is available for activities
 o	Provides warnings for insufficient stock
 o	Updates quantities when activities are completed
+
+
 v.	Priority Management:
 o	Activities are organized by priority levels (1-5)
 o	Lower numerical values indicate higher priority
