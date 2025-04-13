@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1920" height="400" viewBox="0 0 1920 400">
+  <defs>
+    <linearGradient id="bg-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#03262c" />
+      <stop offset="100%" stop-color="#013a33" />
+    </linearGradient>
+    <pattern id="pattern-leaves" width="200" height="200" patternUnits="userSpaceOnUse">
+      <path d="M50,100 C30,80 30,50 50,30 C70,50 70,80 50,100 Z" fill="#0d4a40" opacity="0.3" />
+      <path d="M150,50 C130,30 130,0 150,-20 C170,0 170,30 150,50 Z" fill="#0d4a40" opacity="0.3" />
+      <path d="M100,150 C80,130 80,100 100,80 C120,100 120,130 100,150 Z" fill="#0d4a40" opacity="0.3" />
+    </pattern>
+  </defs>
+  <rect width="1920" height="400" fill="url(#bg-gradient)" />
+  <rect width="1920" height="400" fill="url(#pattern-leaves)" />
+  <path d="M0,100 Q480,200 960,150 Q1440,100 1920,200 L1920,400 L0,400 Z" fill="#03262c" opacity="0.4" />
+</svg>
