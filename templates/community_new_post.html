@@ -1,0 +1,97 @@
+{% extends "base.html" %}
+
+{% block title %}Create New Post - TezZA Community{% endblock %}
+
+{% block content %}
+<!-- Banner Section start -->
+<section class="banner_section">
+    <div class="container">
+        <div class="carousel-caption">
+            <div class="banner-content">
+                <h1>Create New Post</h1>
+                <h3>Share your knowledge with the community</h3>
+                <p>Ask questions, share tips, or discuss farming challenges with fellow farmers.</p>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Banner section exit -->
+
+<!-- New Post Form Section Start -->
+<section class="post-form-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 mx-auto">
+                <div class="community-card">
+                    <h3>Share with the Community</h3>
+                    
+                    <form action="{{ url_for('create_post') }}" method="POST" class="new-post-form">
+                        <div class="mb-3">
+                            <label for="title" class="form-label">Title <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="title" name="title" placeholder="Write a descriptive title" required>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="content" class="form-label">Content <span class="text-danger">*</span></label>
+                            <textarea class="form-control" id="content" name="content" rows="8" placeholder="Share your experience, question, or tip in detail..." required></textarea>
+                        </div>
+                        
+                        <div class="mb-4">
+                            <label class="form-label">Tags <span class="text-danger">*</span></label>
+                            <p class="text-muted small">Select at least one tag that describes your post. This helps others find your content.</p>
+                            
+                            {% if tags %}
+                                <div class="tag-selection">
+                                    {% set categories = {} %}
+                                    {% for tag in tags %}
+                                        {% if tag.category not in categories %}
+                                            {% set _ = categories.update({tag.category: []}) %}
+                                        {% endif %}
+                                        {% set _ = categories[tag.category].append(tag) %}
+                                    {% endfor %}
+                                    
+                                    {% for category, category_tags in categories.items() %}
+                                        <div class="category-section mb-3">
+                                            <h5>{{ category|title }}</h5>
+                                            <div class="tag-checkboxes">
+                                                {% for tag in category_tags %}
+                                                    <div class="form-check form-check-inline">
+                                                        <input class="form-check-input" type="checkbox" id="tag-{{ tag.id }}" name="tags" value="{{ tag.id }}">
+                                                        <label class="form-check-label" for="tag-{{ tag.id }}">{{ tag.name }}</label>
+                                                    </div>
+                                                {% endfor %}
+                                            </div>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            {% else %}
+                                <div class="alert alert-warning">
+                                    No tags available. Please contact an administrator.
+                                </div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="form-actions">
+                            <button type="submit" class="btn main-btn">Publish Post</button>
+                            <a href="{{ url_for('community') }}" class="btn btn-outline-secondary ms-2">Cancel</a>
+                        </div>
+                    </form>
+                </div>
+                
+                <!-- Posting Guidelines -->
+                <div class="community-card mt-4">
+                    <h4>Community Guidelines</h4>
+                    <ul>
+                        <li>Be respectful and considerate of other community members.</li>
+                        <li>Share authentic experiences and practical farming advice.</li>
+                        <li>Use appropriate tags to categorize your post correctly.</li>
+                        <li>Avoid promotional content or spam.</li>
+                        <li>Include details when asking questions to get better responses.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- New Post Form Section End -->
+{% endblock %}

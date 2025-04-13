@@ -1,0 +1,313 @@
+{% extends "base.html" %}
+
+{% block title %}Activity Tracker - TezZA{% endblock %}
+
+{% block content %}
+<!-- Banner Section start -->
+<section class="banner_section">
+    <div class="container">
+        <div class="carousel-caption">
+            <div class="banner-content">
+                <h1>Activity Tracker</h1>
+                <h3>Manage Your Farm Operations</h3>
+                <p>Track all your farming activities, schedule tasks, and monitor progress efficiently.</p>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Banner section exit -->
+
+<!-- Activity Section Start -->
+<section class="activity-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-4 mb-4">
+                <div class="activity-card">
+                    <h3>Add New Activity</h3>
+                    <form id="activity-form" class="activity-form" action="{{ url_for('add_activity') }}" method="POST">
+                        <div class="form-group">
+                            <label for="activity-type">Activity Type</label>
+                            <select id="activity-type" name="activity-type" required>
+                                <option value="">Select activity type</option>
+                                {% for activity_type in activity_types %}
+                                <option value="{{ activity_type.name }}">{{ activity_type.name }}</option>
+                                {% endfor %}
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="activity-date">Date</label>
+                            <input type="date" id="activity-date" name="activity-date" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="activity-field">Field/Location</label>
+                            <select id="activity-field" name="activity-field">
+                                <option value="">Select field</option>
+                                <option value="North Field">North Field</option>
+                                <option value="South Field">South Field</option>
+                                <option value="East Field">East Field</option>
+                                <option value="West Field">West Field</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="activity-crop">Crop Type (if applicable)</label>
+                            <select id="activity-crop" name="activity-crop">
+                                <option value="">Select crop</option>
+                                {% for crop_type in crop_types %}
+                                <option value="{{ crop_type.name }}">{{ crop_type.name }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="activity-desc">Description</label>
+                            <textarea id="activity-desc" name="activity-desc" rows="3" required></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="priority">Priority (1-5, lower is higher priority)</label>
+                            <select id="priority" name="priority">
+                                <option value="1">1 - Urgent</option>
+                                <option value="2">2 - High</option>
+                                <option value="3" selected>3 - Medium</option>
+                                <option value="4">4 - Low</option>
+                                <option value="5">5 - Optional</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="is-recurring" name="is-recurring">
+                                <label class="form-check-label" for="is-recurring">Recurring Activity</label>
+                            </div>
+                        </div>
+                        <div class="form-group recurring-options" style="display: none;">
+                            <label for="interval-days">Repeat every (days)</label>
+                            <input type="number" id="interval-days" name="interval-days" min="1" value="7">
+                        </div>
+                        
+                        <!-- Inventory Requirements Section -->
+                        <div class="inventory-requirements mt-4">
+                            <h4>Required Inventory</h4>
+                            <div id="inventory-items">
+                                <div class="inventory-item row">
+                                    <div class="col-7">
+                                        <select name="inventory-item" class="form-control">
+                                            <option value="">Select item</option>
+                                            {% for item in inventory_items %}
+                                            <option value="{{ item.id }}">{{ item.name }} ({{ item.quantity }} {{ item.unit }})</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                    <div class="col-5">
+                                        <input type="number" name="inventory-quantity" class="form-control" placeholder="Quantity" min="0" step="0.01">
+                                    </div>
+                                </div>
+                            </div>
+                            <button type="button" id="add-inventory-item" class="btn btn-sm btn-outline-secondary mt-2">+ Add Item</button>
+                        </div>
+                        
+                        <button type="submit" class="btn main-btn mt-4" style="width: 100%;">Save Activity</button>
+                    </form>
+                </div>
+            </div>
+            
+            <div class="col-lg-8">
+                <div class="activity-card">
+                    <h3>Recent Activities</h3>
+                    <ul class="activity-list">
+                        {% if recent_activities %}
+                            {% for activity in recent_activities %}
+                            <li>
+                                <div>
+                                    <strong>{{ activity.activity_type }}</strong>{% if activity.field_location %} - {{ activity.field_location }}{% endif %}
+                                    {% if activity.crop_type %}<span class="badge bg-success">{{ activity.crop_type }}</span>{% endif %}
+                                    <p>{{ activity.description }}</p>
+                                </div>
+                                <div>
+                                    <span class="activity-date">{{ activity.date }}</span>
+                                    <span class="activity-status">{{ activity.status }}</span>
+                                </div>
+                            </li>
+                            {% endfor %}
+                        {% else %}
+                            <li class="text-center py-3">
+                                <p>No completed activities yet.</p>
+                            </li>
+                        {% endif %}
+                    </ul>
+                </div>
+                
+                <div class="activity-card mt-4">
+                    <h3>Upcoming Tasks</h3>
+                    <ul class="activity-list">
+                        {% if upcoming_activities %}
+                            {% for activity in upcoming_activities %}
+                            <li>
+                                <div>
+                                    <strong>{{ activity.activity_type }}</strong>{% if activity.field_location %} - {{ activity.field_location }}{% endif %}
+                                    {% if activity.crop_type %}<span class="badge bg-success">{{ activity.crop_type }}</span>{% endif %}
+                                    <p>{{ activity.description }}</p>
+                                    {% if activity.is_recurring %}
+                                    <small class="text-muted"><i class="fas fa-sync-alt"></i> Repeats every {{ activity.interval_days }} days</small>
+                                    {% endif %}
+                                </div>
+                                <div>
+                                    <span class="activity-date">{{ activity.date }}</span>
+                                    <form action="{{ url_for('complete_activity', activity_id=activity.id) }}" method="POST" style="display: inline;">
+                                        <button type="submit" class="btn btn-sm btn-success">Mark Complete</button>
+                                    </form>
+                                </div>
+                            </li>
+                            {% endfor %}
+                        {% else %}
+                            <li class="text-center py-3">
+                                <p>No upcoming tasks scheduled.</p>
+                            </li>
+                        {% endif %}
+                        
+                        {% if session.get('user_id') %}
+                        <li class="text-center border-top pt-3 mt-3">
+                            <a href="{{ url_for('inventory') }}" class="btn btn-outline-primary">
+                                <i class="fas fa-boxes"></i> Manage Inventory
+                            </a>
+                        </li>
+                        {% endif %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <div class="row mt-5">
+            <div class="col-12 text-center">
+                <h2 class="section-title">Activity Analytics</h2>
+                <p class="section-subtitle">Overview of farm activities and resource usage</p>
+            </div>
+            <div class="col-md-6 mb-4">
+                <div class="activity-card">
+                    <h4 style="color: var(--primary-text); text-align: center; margin-bottom: 1.5rem;">Activities by Field</h4>
+                    <div style="height: 250px; display: flex; align-items: center; justify-content: center;">
+                        <!-- Placeholder for chart - would be implemented with Chart.js in production -->
+                        <div style="text-align: center;">
+                            <i class="fas fa-chart-pie fa-5x" style="color: var(--secondary-color); margin-bottom: 20px;"></i>
+                            <p>Activity distribution across different fields</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 mb-4">
+                <div class="activity-card">
+                    <h4 style="color: var(--primary-text); text-align: center; margin-bottom: 1.5rem;">Resource Usage</h4>
+                    <div style="height: 250px; display: flex; align-items: center; justify-content: center;">
+                        <!-- Placeholder for chart - would be implemented with Chart.js in production -->
+                        <div style="text-align: center;">
+                            <i class="fas fa-chart-bar fa-5x" style="color: var(--secondary-color); margin-bottom: 20px;"></i>
+                            <p>Water, fertilizer, and pesticide usage over time</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Inventory Section -->
+        <div class="row mt-5">
+            <div class="col-12 text-center">
+                <h2 class="section-title">Current Inventory</h2>
+                <p class="section-subtitle">Manage your farm resources</p>
+            </div>
+            
+            <!-- Inventory Quick Add Form -->
+            <div class="col-md-4 mb-4">
+                <div class="activity-card">
+                    <h4>Add New Item</h4>
+                    <form action="{{ url_for('add_inventory') }}" method="POST" class="inventory-form">
+                        <div class="form-group">
+                            <label for="name">Item Name</label>
+                            <input type="text" id="name" name="name" required class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label for="category">Category</label>
+                            <select id="category" name="category" class="form-control">
+                                <option value="">Select category</option>
+                                <option value="Seeds">Seeds</option>
+                                <option value="Fertilizer">Fertilizer</option>
+                                <option value="Pesticide">Pesticide</option>
+                                <option value="Equipment">Equipment</option>
+                                <option value="Fuel">Fuel</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="quantity">Quantity</label>
+                                    <input type="number" id="quantity" name="quantity" min="0" step="0.01" required class="form-control">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="unit">Unit</label>
+                                    <input type="text" id="unit" name="unit" placeholder="kg, L, pcs" class="form-control">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="min_quantity">Min. Quantity Alert</label>
+                            <input type="number" id="min_quantity" name="min_quantity" min="0" step="0.01" value="0" class="form-control">
+                        </div>
+                        <button type="submit" class="btn main-btn mt-3" style="width: 100%;">Add Item</button>
+                    </form>
+                </div>
+            </div>
+            
+            <!-- Inventory List -->
+            <div class="col-md-8 mb-4">
+                <div class="activity-card">
+                    <h4>Current Inventory Items</h4>
+                    {% if inventory_items and inventory_items|length > 0 %}
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Item</th>
+                                    <th>Category</th>
+                                    <th>Quantity</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for item in inventory_items %}
+                                <tr>
+                                    <td>{{ item.name }}</td>
+                                    <td>{{ item.category }}</td>
+                                    <td>
+                                        {{ item.quantity }} {{ item.unit }}
+                                        {% if item.quantity <= item.min_quantity %}
+                                        <span class="badge bg-warning">Low</span>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        <form action="{{ url_for('update_inventory', item_id=item.id) }}" method="POST" class="d-flex align-items-center">
+                                            <input type="number" name="quantity" value="{{ item.quantity }}" min="0" step="0.01" class="form-control form-control-sm me-2" style="width: 80px;">
+                                            <button type="submit" class="btn btn-sm btn-primary">Update</button>
+                                        </form>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    {% else %}
+                    <div class="text-center py-4">
+                        <p>No inventory items available. Add your first item!</p>
+                    </div>
+                    {% endif %}
+                    <div class="text-center mt-3">
+                        <a href="{{ url_for('inventory') }}" class="btn btn-outline-primary">
+                            <i class="fas fa-boxes"></i> Full Inventory Management
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Activity Section End -->
+{% endblock %}

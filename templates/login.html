@@ -1,0 +1,171 @@
+{% extends "base.html" %}
+
+{% block title %}Login - TezZA Smart Farm Management{% endblock %}
+
+{% set hide_header = true %}
+{% set hide_footer = true %}
+
+{% block content %}
+<section class="login-section">
+    <div class="container">
+        <div class="login-box">
+            <div class="logo-box">
+                <img src="{{ url_for('static', filename='images/logo.png') }}" alt="TezZA Logo" class="logo-img">
+                <h1>TezZA</h1>
+                <p>Smart Farm Management</p>
+            </div>
+            {% if error %}
+            <div class="alert alert-danger">{{ error }}</div>
+            {% endif %}
+            {% with messages = get_flashed_messages() %}
+            {% if messages %}
+            <div class="alert alert-info">
+                {{ messages[0] }}
+            </div>
+            {% endif %}
+            {% endwith %}
+            <form id="login-form" action="{{ url_for('login_post') }}" method="POST">
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" name="username" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" required>
+                </div>
+                <div class="form-check">
+                    <input type="checkbox" class="form-check-input" id="remember-me" name="remember-me">
+                    <label class="form-check-label" for="remember-me">Remember me</label>
+                </div>
+                <button type="submit" class="login-btn">Login</button>
+                <div class="register-link">
+                    Don't have an account? <a href="{{ url_for('register') }}">Register</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+    .login-section {
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: url("{{ url_for('static', filename='images/login.jpg') }}") no-repeat center center;
+        background-size: cover;
+        position: relative;
+    }
+    
+    .login-section::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.6);
+    }
+    
+    .login-box {
+        background: white;
+        border-radius: 10px;
+        padding: 30px;
+        width: 100%;
+        max-width: 450px;
+        position: relative;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    }
+    
+    .logo-box {
+        text-align: center;
+        margin-bottom: 25px;
+    }
+    
+    .logo-img {
+        width: 80px;
+        margin-bottom: 10px;
+    }
+    
+    .logo-box h1 {
+        font-size: 2.5rem;
+        margin-bottom: 0;
+        color: var(--primary-color);
+    }
+    
+    .logo-box p {
+        font-size: 1rem;
+        color: var(--secondary-color);
+    }
+    
+    .form-group {
+        margin-bottom: 20px;
+    }
+    
+    .form-group label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: 500;
+    }
+    
+    .form-group input {
+        width: 100%;
+        padding: 10px 15px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        font-size: 1rem;
+    }
+    
+    .form-check {
+        margin: 15px 0;
+    }
+    
+    .login-btn {
+        display: block;
+        width: 100%;
+        padding: 12px;
+        background: var(--primary-color);
+        color: white;
+        border: none;
+        border-radius: 5px;
+        font-size: 1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background 0.3s;
+    }
+    
+    .login-btn:hover {
+        background: var(--secondary-color);
+    }
+    
+    .register-link {
+        text-align: center;
+        margin-top: 20px;
+    }
+    
+    .register-link a {
+        color: var(--primary-color);
+        font-weight: 600;
+    }
+    
+    .alert {
+        padding: 10px 15px;
+        margin-bottom: 20px;
+        border-radius: 5px;
+    }
+    
+    .alert-danger {
+        background-color: #f8d7da;
+        color: #721c24;
+        border: 1px solid #f5c6cb;
+    }
+    
+    .alert-info {
+        background-color: #d1ecf1;
+        color: #0c5460;
+        border: 1px solid #bee5eb;
+    }
+</style>
+{% endblock %}

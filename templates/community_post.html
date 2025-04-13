@@ -1,0 +1,144 @@
+{% extends "base.html" %}
+
+{% block title %}{{ post.title }} - TezZA Community{% endblock %}
+
+{% block content %}
+<!-- Banner Section start -->
+<section class="banner_section">
+    <div class="container">
+        <div class="carousel-caption">
+            <div class="banner-content">
+                <h1>Community Post</h1>
+                <h3>{{ post.title }}</h3>
+                <p>Author: {{ post.username }} | Views: {{ post.views }} | Likes: {{ post.likes }}</p>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Banner section exit -->
+
+<!-- Post Detail Section Start -->
+<section class="post-detail-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8">
+                <div class="community-card post-detail">
+                    <div class="post-header">
+                        <div class="post-avatar">{{ post.username[:1].upper() }}</div>
+                        <div class="post-author">
+                            <h4>{{ post.username }}</h4>
+                            <span class="post-meta">
+                                {{ post.farm_name or 'Farm' }} • {{ post.location or 'Unknown location' }} • 
+                                <span class="post-time">{{ post.created_at }}</span>
+                            </span>
+                        </div>
+                    </div>
+                    
+                    <!-- Post tags -->
+                    {% if tags %}
+                        <div class="post-tags mb-3">
+                            {% for tag in tags %}
+                                <a href="{{ url_for('posts_by_tag', tag_id=tag.id) }}" class="tag-btn">
+                                    <span class="badge bg-secondary me-1">{{ tag.category }}</span>{{ tag.name }}
+                                </a>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                    
+                    <h3 class="post-title mb-3">{{ post.title }}</h3>
+                    
+                    <div class="post-content">
+                        {{ post.content|replace('\n', '<br>')|safe }}
+                    </div>
+                    
+                    <div class="post-actions mt-4">
+                        <form action="{{ url_for('like_post', post_id=post.id) }}" method="POST" class="d-inline">
+                            <button type="submit" class="post-action post-like border-0 bg-transparent">
+                                <i class="far fa-thumbs-up"></i> Like ({{ post.likes }})
+                            </button>
+                        </form>
+                        <div class="post-action">
+                            <i class="far fa-eye"></i> Views ({{ post.views }})
+                        </div>
+                        <a href="{{ url_for('community') }}" class="post-action">
+                            <i class="fas fa-arrow-left"></i> Back to Community
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Comments Section -->
+                <div class="community-card mt-4">
+                    <h3>Comments ({{ comments|length }})</h3>
+                    
+                    <!-- Add Comment Form -->
+                    <form action="{{ url_for('add_comment', post_id=post.id) }}" method="POST" class="comment-form mb-4">
+                        <div class="mb-3">
+                            <textarea name="comment" rows="3" class="form-control" placeholder="Add your comment..."></textarea>
+                        </div>
+                        <button type="submit" class="btn main-btn">Submit Comment</button>
+                    </form>
+                    
+                    <!-- Comment List -->
+                    {% if comments %}
+                        {% for comment in comments %}
+                            <div class="comment">
+                                <div class="comment-header">
+                                    <div class="comment-avatar">{{ comment.username[:1].upper() }}</div>
+                                    <div class="comment-author">
+                                        <h5>{{ comment.username }}</h5>
+                                        <span class="comment-time">{{ comment.created_at }}</span>
+                                    </div>
+                                </div>
+                                <div class="comment-content">
+                                    {{ comment.content|replace('\n', '<br>')|safe }}
+                                </div>
+                                <div class="comment-actions">
+                                    <div class="comment-action">
+                                        <i class="far fa-thumbs-up"></i> Like ({{ comment.likes }})
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    {% else %}
+                        <p class="text-muted">No comments yet. Be the first to comment!</p>
+                    {% endif %}
+                </div>
+            </div>
+            
+            <div class="col-lg-4">
+                <!-- Author Information -->
+                <div class="community-card mb-4">
+                    <h3>About the Author</h3>
+                    <div class="author-info">
+                        <div class="author-avatar">{{ post.username[:1].upper() }}</div>
+                        <h4>{{ post.username }}</h4>
+                        {% if post.farm_name %}
+                            <p><strong>Farm:</strong> {{ post.farm_name }}</p>
+                        {% endif %}
+                        {% if post.location %}
+                            <p><strong>Location:</strong> {{ post.location }}</p>
+                        {% endif %}
+                    </div>
+                </div>
+                
+                <!-- Related Posts (You would need to implement this in the backend) -->
+                <div class="community-card">
+                    <h3>Related Tags</h3>
+                    {% if tags %}
+                        <div class="tag-list">
+                            {% for tag in tags %}
+                                <a href="{{ url_for('posts_by_tag', tag_id=tag.id) }}" class="tag-btn">
+                                    <span class="badge bg-secondary me-1">{{ tag.category }}</span>{{ tag.name }}
+                                </a>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        <p>No tags for this post</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Post Detail Section End -->
+{% endblock %}

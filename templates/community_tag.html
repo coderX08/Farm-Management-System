@@ -1,0 +1,131 @@
+{% extends "base.html" %}
+
+{% block title %}{{ tag.name }} Posts - TezZA Community{% endblock %}
+
+{% block content %}
+<!-- Banner Section start -->
+<section class="banner_section">
+    <div class="container">
+        <div class="carousel-caption">
+            <div class="banner-content">
+                <h1>Posts tagged: {{ tag.name }}</h1>
+                <h3>Category: {{ tag.category|title }}</h3>
+                <p>Browse all community posts related to this topic</p>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Banner section exit -->
+
+<!-- Tag Posts Section Start -->
+<section class="tag-posts-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8">
+                <div class="community-card">
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <h3>Posts tagged: {{ tag.name }}</h3>
+                        <a href="{{ url_for('new_post_form') }}" class="btn main-btn">Create Post</a>
+                    </div>
+                    
+                    {% if posts %}
+                        {% for post in posts %}
+                            <div class="community-post">
+                                <div class="post-header">
+                                    <div class="post-avatar">{{ post.username[:1].upper() }}</div>
+                                    <div class="post-author">
+                                        <h4>{{ post.username }}</h4>
+                                        <span class="post-meta">
+                                            {{ post.farm_name or 'Farm' }} • {{ post.location or 'Unknown location' }} • 
+                                            <span class="post-time">{{ post.created_at }}</span>
+                                        </span>
+                                    </div>
+                                </div>
+                                <a href="{{ url_for('view_post', post_id=post.id) }}">
+                                    <h5 class="post-title">{{ post.title }}</h5>
+                                </a>
+                                <div class="post-content">
+                                    {{ post.content[:200] }}{% if post.content|length > 200 %}...{% endif %}
+                                </div>
+                                
+                                <!-- Post tags -->
+                                {% if post.id in post_tags %}
+                                    <div class="post-tags mb-2">
+                                        {% for tag in post_tags[post.id] %}
+                                            <a href="{{ url_for('posts_by_tag', tag_id=tag.id) }}" class="tag-btn">
+                                                <span class="badge bg-secondary me-1">{{ tag.category }}</span>{{ tag.name }}
+                                            </a>
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
+                                
+                                <div class="post-actions">
+                                    <form action="{{ url_for('like_post', post_id=post.id) }}" method="POST" class="d-inline">
+                                        <button type="submit" class="post-action post-like border-0 bg-transparent">
+                                            <i class="far fa-thumbs-up"></i> Like ({{ post.likes }})
+                                        </button>
+                                    </form>
+                                    <a href="{{ url_for('view_post', post_id=post.id) }}" class="post-action post-comment">
+                                        <i class="far fa-comment"></i> Comment ({{ post.comment_count }})
+                                    </a>
+                                    <div class="post-action">
+                                        <i class="far fa-eye"></i> Views ({{ post.views }})
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    {% else %}
+                        <div class="alert alert-info">
+                            No posts found with this tag. Be the first to create a post!
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+            
+            <div class="col-lg-4">
+                <!-- Other Tags -->
+                <div class="community-card">
+                    <h3>Browse Other Tags</h3>
+                    <div class="tag-categories">
+                        {% if all_tags %}
+                            {% set categories = {} %}
+                            {% for all_tag in all_tags %}
+                                {% if all_tag.category not in categories %}
+                                    {% set _ = categories.update({all_tag.category: []}) %}
+                                {% endif %}
+                                {% set _ = categories[all_tag.category].append(all_tag) %}
+                            {% endfor %}
+                            
+                            {% for category, category_tags in categories.items() %}
+                                <div class="category-section mb-3">
+                                    <h5>{{ category|title }}</h5>
+                                    <div class="tag-list">
+                                        {% for all_tag in category_tags %}
+                                            <a href="{{ url_for('posts_by_tag', tag_id=all_tag.id) }}" 
+                                               class="tag-btn {% if all_tag.id == tag.id %}active{% endif %}">
+                                                {{ all_tag.name }}
+                                            </a>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        {% else %}
+                            <p>No categories available</p>
+                        {% endif %}
+                    </div>
+                </div>
+                
+                <!-- Back to Community -->
+                <div class="community-card mt-4">
+                    <div class="text-center">
+                        <a href="{{ url_for('community') }}" class="btn main-btn">
+                            <i class="fas fa-arrow-left me-2"></i> Back to Community
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Tag Posts Section End -->
+{% endblock %}

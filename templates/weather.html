@@ -1,0 +1,213 @@
+{% extends "base.html" %}
+
+{% block title %}Weather Forecast - TezZA{% endblock %}
+
+{% block content %}
+<!-- Banner Section start -->
+<section class="banner_section">
+    <div class="container">
+        <div class="carousel-caption">
+            <div class="banner-content">
+                <h1>Weather Forecast</h1>
+                <h3>Plan Your Farm Activities</h3>
+                <p>Stay ahead of changing weather conditions with accurate forecasts for your location.</p>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Banner section exit -->
+
+<!-- Weather Section Start -->
+<section class="weather-section">
+    <div class="container">
+        <div class="row justify-content-center mb-5">
+            <div class="col-12 text-center">
+                <h2 class="section-title">Current Weather</h2>
+                <p class="section-subtitle" id="location">Getting your location...</p>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-6 mb-4">
+                <div class="weather-card">
+                    <img src="https://images.unsplash.com/photo-1531789694268-03cfe5989f89" alt="Weather Icon" class="weather-icon">
+                    <div class="weather-temp">28°C</div>
+                    <div class="weather-info">Sunny</div>
+                    <div class="weather-details">
+                        <div class="weather-detail">
+                            <span>Humidity</span>
+                            <strong>65%</strong>
+                        </div>
+                        <div class="weather-detail">
+                            <span>Wind</span>
+                            <strong>12 km/h</strong>
+                        </div>
+                        <div class="weather-detail">
+                            <span>Pressure</span>
+                            <strong>1012 hPa</strong>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-6 mb-4">
+                <div class="weather-card">
+                    <h3 style="color: var(--primary-text); text-align: center; margin-bottom: 2rem;">Agricultural Weather Insights</h3>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <div class="d-flex align-items-center">
+                                <i class="fas fa-tint fa-2x me-3" style="color: var(--secondary-color);"></i>
+                                <div>
+                                    <h5>Soil Moisture</h5>
+                                    <p>75% - Adequate</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <div class="d-flex align-items-center">
+                                <i class="fas fa-thermometer-half fa-2x me-3" style="color: var(--secondary-color);"></i>
+                                <div>
+                                    <h5>Soil Temperature</h5>
+                                    <p>22°C - Optimal</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <div class="d-flex align-items-center">
+                                <i class="fas fa-cloud-rain fa-2x me-3" style="color: var(--secondary-color);"></i>
+                                <div>
+                                    <h5>Precipitation</h5>
+                                    <p>0.2 mm expected</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <div class="d-flex align-items-center">
+                                <i class="fas fa-sun fa-2x me-3" style="color: var(--secondary-color);"></i>
+                                <div>
+                                    <h5>UV Index</h5>
+                                    <p>6 - High</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mt-5">
+            <div class="col-12">
+                <h2 class="section-title text-center">7-Day Forecast</h2>
+            </div>
+            <div class="col-12">
+                <div class="table-responsive">
+                    <table class="forecast-table">
+                        <thead>
+                            <tr>
+                                <th>Day</th>
+                                <th>Weather</th>
+                                <th>High</th>
+                                <th>Low</th>
+                                <th>Precipitation</th>
+                                <th>Wind</th>
+                                <th>Humidity</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Monday</td>
+                                <td><img src="https://images.unsplash.com/photo-1531789694268-03cfe5989f89" alt="Sunny" class="forecast-icon"> Sunny</td>
+                                <td>28°C</td>
+                                <td>20°C</td>
+                                <td>0%</td>
+                                <td>12 km/h</td>
+                                <td>65%</td>
+                            </tr>
+                            <tr>
+                                <td>Tuesday</td>
+                                <td><img src="https://images.unsplash.com/photo-1697525994215-0fadc6c2c593" alt="Partly Cloudy" class="forecast-icon"> Partly Cloudy</td>
+                                <td>27°C</td>
+                                <td>19°C</td>
+                                <td>10%</td>
+                                <td>10 km/h</td>
+                                <td>68%</td>
+                            </tr>
+                            <tr>
+                                <td>Wednesday</td>
+                                <td><img src="https://images.unsplash.com/photo-1640704124529-3921034f491e" alt="Rainy" class="forecast-icon"> Rainy</td>
+                                <td>25°C</td>
+                                <td>18°C</td>
+                                <td>70%</td>
+                                <td>15 km/h</td>
+                                <td>75%</td>
+                            </tr>
+                            <tr>
+                                <td>Thursday</td>
+                                <td><img src="https://images.unsplash.com/photo-1640704124529-3921034f491e" alt="Rainy" class="forecast-icon"> Rainy</td>
+                                <td>24°C</td>
+                                <td>18°C</td>
+                                <td>80%</td>
+                                <td>20 km/h</td>
+                                <td>80%</td>
+                            </tr>
+                            <tr>
+                                <td>Friday</td>
+                                <td><img src="https://images.unsplash.com/photo-1697525994215-0fadc6c2c593" alt="Cloudy" class="forecast-icon"> Cloudy</td>
+                                <td>25°C</td>
+                                <td>19°C</td>
+                                <td>40%</td>
+                                <td>14 km/h</td>
+                                <td>72%</td>
+                            </tr>
+                            <tr>
+                                <td>Saturday</td>
+                                <td><img src="https://images.unsplash.com/photo-1531789694268-03cfe5989f89" alt="Sunny" class="forecast-icon"> Sunny</td>
+                                <td>26°C</td>
+                                <td>20°C</td>
+                                <td>5%</td>
+                                <td>10 km/h</td>
+                                <td>66%</td>
+                            </tr>
+                            <tr>
+                                <td>Sunday</td>
+                                <td><img src="https://images.unsplash.com/photo-1531789694268-03cfe5989f89" alt="Sunny" class="forecast-icon"> Sunny</td>
+                                <td>28°C</td>
+                                <td>21°C</td>
+                                <td>0%</td>
+                                <td>8 km/h</td>
+                                <td>63%</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mt-5">
+            <div class="col-12 text-center">
+                <h2 class="section-title">Weather Advisory</h2>
+                <p class="section-subtitle">Recommendations for farm activities based on the forecast</p>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="weather-card">
+                    <h4 style="color: var(--primary-text); text-align: center; margin-bottom: 1.5rem;">Crop Protection</h4>
+                    <p>Due to expected rainfall on Wednesday and Thursday, consider delaying pesticide application until Friday. Prepare drainage systems to avoid waterlogging in low-lying areas.</p>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="weather-card">
+                    <h4 style="color: var(--primary-text); text-align: center; margin-bottom: 1.5rem;">Irrigation Planning</h4>
+                    <p>With dry conditions expected on Monday and Tuesday, prioritize irrigation for water-sensitive crops. Natural rainfall expected mid-week should provide 15-20mm of water.</p>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="weather-card">
+                    <h4 style="color: var(--primary-text); text-align: center; margin-bottom: 1.5rem;">Harvesting Schedule</h4>
+                    <p>Ideal harvesting conditions on Monday, Tuesday, and the weekend. Plan to complete sensitive crop harvesting before Wednesday's rain to maintain quality.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Weather Section End -->
+{% endblock %}

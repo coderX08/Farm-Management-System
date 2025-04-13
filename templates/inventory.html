@@ -1,0 +1,173 @@
+{% extends "base.html" %}
+
+{% block title %}Inventory Management - TezZA{% endblock %}
+
+{% block content %}
+<!-- Banner Section start -->
+<section class="banner_section">
+    <div class="container">
+        <div class="carousel-caption">
+            <div class="banner-content">
+                <h1>Inventory Management</h1>
+                <h3>Track Resources & Supplies</h3>
+                <p>Manage your farm inventory efficiently to ensure you always have what you need for planned activities.</p>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Banner section exit -->
+
+<!-- Inventory Section Start -->
+<section class="inventory-section">
+    <div class="container">
+        <div class="row">
+            <!-- Add Inventory Form -->
+            <div class="col-lg-4 mb-4">
+                <div class="activity-card">
+                    <h3>Add New Item</h3>
+                    <form action="{{ url_for('add_inventory') }}" method="POST" class="inventory-form">
+                        <div class="form-group">
+                            <label for="name">Item Name</label>
+                            <input type="text" id="name" name="name" required class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label for="category">Category</label>
+                            <select id="category" name="category" class="form-control">
+                                <option value="">Select category</option>
+                                <option value="Seeds">Seeds</option>
+                                <option value="Fertilizer">Fertilizer</option>
+                                <option value="Pesticide">Pesticide</option>
+                                <option value="Equipment">Equipment</option>
+                                <option value="Fuel">Fuel</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="quantity">Quantity</label>
+                            <input type="number" id="quantity" name="quantity" min="0" step="0.01" required class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label for="unit">Unit of Measurement</label>
+                            <input type="text" id="unit" name="unit" placeholder="e.g., kg, L, pieces" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label for="min_quantity">Minimum Quantity Alert</label>
+                            <input type="number" id="min_quantity" name="min_quantity" min="0" step="0.01" value="0" class="form-control">
+                            <small class="text-muted">System will alert you when inventory falls below this threshold</small>
+                        </div>
+                        <button type="submit" class="btn main-btn" style="width: 100%;">Add Item</button>
+                    </form>
+                </div>
+            </div>
+            
+            <!-- Inventory List -->
+            <div class="col-lg-8">
+                <!-- Low Stock Alerts -->
+                {% if low_stock_items and low_stock_items|length > 0 %}
+                <div class="activity-card mb-4">
+                    <h3>
+                        <i class="fas fa-exclamation-triangle text-warning"></i> 
+                        Low Stock Alerts
+                    </h3>
+                    <ul class="inventory-list">
+                        {% for item in low_stock_items %}
+                        <li class="alert alert-warning">
+                            <div>
+                                <strong>{{ item.name }}</strong>
+                                <p>Current: {{ item.quantity }} {{ item.unit }}</p>
+                                <p>Minimum: {{ item.min_quantity }} {{ item.unit }}</p>
+                            </div>
+                            <div>
+                                <form action="{{ url_for('update_inventory', item_id=item.id) }}" method="POST" class="d-flex align-items-center">
+                                    <input type="number" name="quantity" value="{{ item.quantity }}" min="0" step="0.01" class="form-control form-control-sm me-2" style="width: 100px;">
+                                    <button type="submit" class="btn btn-sm btn-success">Update</button>
+                                </form>
+                            </div>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                {% endif %}
+                
+                <!-- All Inventory Items -->
+                <div class="activity-card">
+                    <h3>Current Inventory</h3>
+                    {% if inventory_items and inventory_items|length > 0 %}
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Item</th>
+                                    <th>Category</th>
+                                    <th>Quantity</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for item in inventory_items %}
+                                <tr>
+                                    <td>{{ item.name }}</td>
+                                    <td>{{ item.category }}</td>
+                                    <td>
+                                        {{ item.quantity }} {{ item.unit }}
+                                        {% if item.quantity <= item.min_quantity %}
+                                        <span class="badge bg-warning">Low</span>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        <form action="{{ url_for('update_inventory', item_id=item.id) }}" method="POST" class="d-flex align-items-center">
+                                            <input type="number" name="quantity" value="{{ item.quantity }}" min="0" step="0.01" class="form-control form-control-sm me-2" style="width: 100px;">
+                                            <button type="submit" class="btn btn-sm btn-primary">Update</button>
+                                        </form>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    {% else %}
+                    <div class="text-center py-4">
+                        <p>No inventory items available. Add your first item!</p>
+                    </div>
+                    {% endif %}
+                </div>
+                
+                <!-- Inventory Usage Analytics -->
+                <div class="activity-card mt-4">
+                    <h3>Inventory Usage Analytics</h3>
+                    <div style="height: 250px; display: flex; align-items: center; justify-content: center;">
+                        <!-- Placeholder for chart - would be implemented with Chart.js in production -->
+                        <div style="text-align: center;">
+                            <i class="fas fa-chart-line fa-5x" style="color: var(--secondary-color); margin-bottom: 20px;"></i>
+                            <p>Track inventory usage patterns over time</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Related Tasks Section -->
+        <div class="row mt-5">
+            <div class="col-12">
+                <div class="activity-card">
+                    <h3>Tasks Requiring Inventory</h3>
+                    <p class="text-center py-3">
+                        <a href="{{ url_for('activity') }}" class="btn main-btn">
+                            <i class="fas fa-tasks"></i> Manage Farm Activities
+                        </a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Inventory Section End -->
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Additional JavaScript for Inventory page
+});
+</script>
+{% endblock %}
